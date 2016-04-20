@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
     struct sigaction act;
     act.sa_handler = sigint_handler;
     sigaction(SIGINT, &act, NULL);
+    sigaction(SIGTSTP, &act, NULL);
 
     char *args_help = "Enter pathname and id number.\n";
     char *pathname;

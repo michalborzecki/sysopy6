@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     struct sigaction act;
     act.sa_handler = sigint_handler;
     sigaction(SIGINT, &act, NULL);
+    sigaction(SIGTSTP, &act, NULL);
 
     char *args_help = "Enter queue name (with preceding /).\n";
     if (read_args(argc, argv, &queue_name) != 0) {
@@ -137,8 +138,8 @@ int read_args(int argc, char *argv[], char **queue_name) {
         printf("Queue name must start with / character.\n");
         return 1;
     }
-    if (strlen(argv[1]) == 1) {
-        printf("Queue name must be longer than 1.\n");
+    if (strlen(argv[1]) == 1 || strlen(argv[1]) > MAX_QUEUE_NAME_SIZE) {
+        printf("Queue name must be longer than 1 and shorter than %d.\n", MAX_QUEUE_NAME_SIZE);
         return 1;
     }
     for (int i = 1; argv[1][i] != '\0'; i++) {
